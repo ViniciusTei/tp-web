@@ -10,4 +10,8 @@ pages.get('/register', function(req, res) {
   res.render('register');
 });
 
+pages.get('/home', function(req, res) {
+  res.render('home', { user: { userEmail: 'teste' }});
+});
+
 module.exports = pages;

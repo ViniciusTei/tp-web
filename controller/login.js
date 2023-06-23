@@ -12,7 +12,10 @@ const LoginController = {
       }
 
       res.render('home', {
-        user: user instanceof loginModel
+        user: {
+          userId: user.loginId,
+          userEmail: user.emailCliente
+        }
       })
     } catch (error) {
       res.render('erro', {
