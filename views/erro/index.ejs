@@ -3,16 +3,24 @@
 <head>
   <%- include('../shared/head'); %>
 </head>
-<body class="container">
+<body>
 
-  <main>
-    <div class="jumbotron">
-      <h1 class="display-4">Erro!</h1>
-      <p class="lead">Alguma coisa deu errado!</p>
-      <hr class="my-4">
-      <p><%= erro %></p>
-      <a class="btn btn-primary btn-lg" href="/" role="button">Voltar</a>
+  <main class="vh-100 vw-100" style="background: #6610f2">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="container bg-body p-4 rounded">
+          <h1 class="display-4">Erro!</h1>
+          <p class="lead">Alguma coisa deu errado!</p>
+          <hr class="my-4">
+          <p><%= erro %></p>
+          <div class="text-center">
+            <a class="btn btn-link btn-lg" href="/" role="button">Voltar</a>
+
+          </div>
+        </div>
+      </div>
     </div>
+
   </main>
 
 </body>
