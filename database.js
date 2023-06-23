@@ -1,23 +1,13 @@
 const { Sequelize } = require('sequelize');
 
-const Connection = {
-  getDb() {
+const Login = require('./model/login');
 
-    try {
-      const sequelize = new Sequelize('ecommerce', 'root', '', {
-        host: 'localhost',
-        dialect: 'mysql',
-        port: 3306
-      })
-      
-      sequelize.authenticate()
+const sequelize = new Sequelize('ecommerce', 'root', '', {
+  host: 'localhost',
+  dialect: 'mysql',
+  port: 3306
+})
 
-      return sequelize
-    } catch (error) {
-      console.error('Error trying to connect to MySql database!')
-      throw new Error('Error trying to connect to MySql database!')
-    }
-  }
-}
+Login.init(sequelize)
 
-module.exports = Connection;
+module.exports = sequelize;

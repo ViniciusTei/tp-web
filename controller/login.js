@@ -11,6 +11,10 @@ const LoginController = {
         throw new Error('User not found!')
       }
 
+      if (user.senhaCliente !== payload.password) {
+        throw new Error('User incorret!')
+      }
+
       res.render('home', {
         user: {
           userId: user.loginId,
