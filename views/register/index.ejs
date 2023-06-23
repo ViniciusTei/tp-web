@@ -3,19 +3,70 @@
 <head>
   <%- include('../shared/head'); %>
 </head>
-<body class="container">
+<body>
 
-  <main>
-    <div class="jumbotron">
-      <h1>Cadastar</h1>
-      <form class="" action="/api/register" method="post">
-        <input type="email" name="useremail" id="useremail">
-        <input type="password" name="password" id="password">
-        <input type="password" name="password" id="password">
-        <button type="submit">Cadastrar</button>
-      </form>
+  <section class="vh-100 vw-100" style="background: #6610f2">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+          <div class="card shadow-2-strong" style="border-radius: 1rem;">
+            <form class="card-body p-5 text-center" method="post" action="/api/register">
+  
+              <h3 class="mb-5 ">Cadastrar</h3>
+  
+              <div class="form-outline mb-4 text-start">
+                <label class="form-label" for="typeEmailX-2">Email</label>
+                <input type="email" name="useremail" id="typeEmailX-2" class="form-control form-control-lg" required />
+              </div>
+  
+              <div class="form-outline mb-4 text-start">
+                <label class="form-label" for="typePasswordX-2">Senha</label>
+                <input type="password" name="password" id="typePasswordX-2" class="form-control form-control-lg" required />
+              </div>
+
+              <div class="form-outline mb-4 text-start">
+                <label class="form-label" for="typePasswordX-3">Confirmar senha</label>
+                <input type="password" name="confirm_password" id="typePasswordX-3" class="form-control form-control-lg" required/>
+              </div>
+  
+              <button class="btn btn-primary btn-lg btn-block" type="submit" id="submitBtn">Confirmar</button>
+  
+              <hr class="my-4">
+  
+              <button class="btn btn-sm btn-link btn-block mb-2 text-xs" type="submit">
+                <i class="bi bi-person-plus"></i>
+                <a class="text-center" href="/">Voltar</a>
+              </button>
+  
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
-  </main>
+  </section>
 
+  <script>
+    const confirmPasswordInput = document.getElementById('typePasswordX-3')
+    const newPassordInput = document.getElementById('typePasswordX-2')
+    const btnSubmit = document.getElementById('submitBtn')
+
+    confirmPasswordInput.addEventListener('onChange', (event) => {
+      const value = event.target.value;
+
+      if (value.length > 0) {
+        if (newPassordInput.value !== value) {
+          newPassordInput.setAttribute('isValid', false)
+          confirmPasswordInput.setAttribute('isValid', false)
+          btnSubmit.disabled = true
+        } else {
+          newPassordInput.setAttribute('isValid', true)
+          confirmPasswordInput.setAttribute('isValid', true)
+          btnSubmit.disabled = false
+        }
+      }
+    })
+  </script>
+
+<%- include('../shared/footer'); %>
 </body>
 </html>
