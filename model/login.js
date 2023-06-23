@@ -23,6 +23,7 @@ class Login extends Model {
     }, {
       sequelize,
       tableName: 'login',
+      timestamps: false
     })
   }
 }
