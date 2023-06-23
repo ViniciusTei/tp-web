@@ -1,24 +1,25 @@
-const LoginModel = require('../model/login');
 const loginModel = require('../model/login');
 
 const LoginController = {
-  session(req, res) {
-    loginModel.login('vinicius@email.com', '123')
-    res.send('Login')
-  },
-  register(req, res) {
-    const data = req.body;
+  async index(req, res) {
+    const payload = req.body;
+
     try {
-      const result = LoginModel.register(data.useremail, data.password);
-      console.log('inserted row', result)
-      res.render('home')
+      const user = await loginModel.findOne({ where: { emailCliente: payload.useremail } })
+
+      if (user === null) {
+        throw new Error('User not found!')
+      }
+
+      res.render('home', {
+        user: user instanceof loginModel
+      })
     } catch (error) {
       res.render('erro', {
         erro: error
       })
     }
-    
-  }
+  },
 }
 
 module.exports = LoginController;
