@@ -1,3 +1,4 @@
+const { BASE_URL } = require("../config/config");
 const loginModel = require('../model/login');
 
 const LoginController = {
@@ -16,7 +17,7 @@ const LoginController = {
       }
 
       res.cookie('Authorization', user.loginId)
-      res.redirect(req.headers.origin + '/home')
+      res.redirect(BASE_URL + '/home')
     } catch (error) {
       res.set({
         'Content-Type': 'text/html',

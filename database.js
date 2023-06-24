@@ -1,5 +1,5 @@
 const { Sequelize } = require('sequelize');
-require("dotenv").config();
+const { DB_HOST } = require("./config/config");
 
 const Login = require('./model/login');
 const Cidade = require('./model/cidade');
@@ -7,12 +7,12 @@ const Cidade = require('./model/cidade');
 const config = {
   dialect: 'mysql',
   dialectOptions: {
-    socketPath:  process.env.MYSQL_HOST
+    socketPath: DB_HOST
   }
 }
 
 const devConfig = {
-  host: process.env.MYSQL_HOST,
+  host: DB_HOST,
   dialect: 'mysql',
 }
 

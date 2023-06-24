@@ -1,3 +1,4 @@
+const { BASE_URL } = require("../config/config");
 const loginModel = require('../model/login');
 
 const RegisterController = {
@@ -12,7 +13,7 @@ const RegisterController = {
       
       console.log('inserted new user', user)
       res.cookie('Authorization', user.loginId)
-      res.redirect(req.headers.origin + '/home')
+      res.redirect(BASE_URL + '/home')
     } catch (error) {
       res.render('erro', {
         erro: error
