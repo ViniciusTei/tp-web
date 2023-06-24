@@ -1,10 +1,10 @@
 const loginModel = require('../model/login');
 
-const HomeController = {
+const CidadeController = {
   async render(req, res) {
     const user = req.user;
     try {
-      res.render('home', {
+      res.render('cidade', {
         user
       })
     } catch (error) {
@@ -16,4 +16,4 @@ const HomeController = {
   }
 }
 
-module.exports = HomeController;
+module.exports = CidadeController;

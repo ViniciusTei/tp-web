@@ -20,6 +20,12 @@ const RegisterController = {
       })
     }
     
+  },
+  async render(req, res) {
+    res.set({
+      'Content-Type': 'text/html',
+    })
+    res.render('register');
   }
 }
 

@@ -1,4 +1,6 @@
-function auth (req, res, next) {
+const loginModel = require('../model/login');
+
+async function auth (req, res, next) {
   const authHeader = req.cookies.Authorization;
 
   if (!authHeader) {
@@ -7,9 +9,15 @@ function auth (req, res, next) {
     });
   }
 
-  req.userId = authHeader
+  const user = await loginModel.findOne({ where: { loginId: authHeader } })
+
+  req.user = {
+    userId: user.loginId,
+    userEmail: user.emailCliente
+  }
+
   res.cookie('Authorization', authHeader)
-  console.log('User authenticated', authHeader);
+  console.log('User authenticated', req.user);
   next()
 }
 
