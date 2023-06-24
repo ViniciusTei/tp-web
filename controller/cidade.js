@@ -21,8 +21,7 @@ const CidadeController = {
   async index(req, res) {
     const payload = req.body
     try {
-      console.log('payload', payload)
-      if (!payload.nomeCidade || !payload.estado) {
+      if (!payload.nomeCidade || !payload.estadoCidade) {
         throw new Error('Dados faltando para realizar o cadastro')
       }
 
@@ -36,10 +35,11 @@ const CidadeController = {
       const novaCidade = await cidadeModel.create(data);
 
       console.log('inserted new city', novaCidade)
-      res.redirect(BASE_URL + '/home')
+      res.redirect(BASE_URL + '/cidade')
     } catch (error) {
       res.render('erro', {
-        erro: error
+        erro: error,
+        redirect: '/cidade',
       })
     }
   }
