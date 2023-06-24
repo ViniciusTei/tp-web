@@ -4,29 +4,93 @@
   <%- include('../shared/head'); %>
 </head>
 <body class="vh-100 vw-100 p-4" style="background: #6610f2">
-  <header class="bg-body rounded mb-4 p-2 d-flex justify-content-between" style="max-height: 50px;">
-    <div class="d-flex align-items-center">
-      <div style="font-size: 18px; color: #fff; font-weight: bold; background: #6610f2; width: 32px; height: 32px; border-radius: 4px; display: flex; align-items: center; justify-content: center;">
-        C
-      </div>
-      <p class="h5 ms-2 d-none d-md-block">Controle de vendas</p>
-    </div>
-      
-    <div class="d-flex align-items-center">
-      <p class="h6 me-2 d-none d-md-block">Bem vindo, <%= user.userEmail %></p>
-      <button type="button" class="btn btn-primary btn-sm">
-        <div>
-          Sair
-          <i class="bi bi-box-arrow-right"></i>
-        </div>
-      </button>
-    </div>
-    
-  </header>
 
-  <main class="container bg-body rounded p-2">
+  <%- include('../shared/navbar', {user: user}); %>
+
+  <main class="container bg-body rounded p-4">
     
     <h1>Cidade</h1>
+
+    <div class="d-flex flex-row-reverse">
+      <button type="button" class="btn btn-outline-secondary btn-sm ms-auto" data-bs-toggle="modal" data-bs-target="#novaCidadeModal">Cadastrar nova cidade</button>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Cidade</th>
+          <th scope="col">Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% cidades.forEach(function(cidade){ %>
+           
+          <tr>
+           <th scope="row"><%= cidade.cidadeId %></th>
+           <td><%= cidade.nomeCidade  %></td>
+           <td><%= cidade.estadoCidade %> </td> 
+          </tr>
+          
+        <% }); %>
+      </tbody>
+    </table>
+
+    <div class="modal fade" id="novaCidadeModal" tabindex="-1" aria-labelledby="novaCidadeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Cadastrar nova cidade</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+          </div>
+          <div class="modal-body">
+            <form id="cidadeForm" method="post" action="/api/cidade">
+              <div class="mb-3">
+                <label for="nomeCidade" class="form-label">Nome da cidade</label>
+                <input type="text" class="form-control" id="nomeCidade" name="nomeCidade" aria-describedby="nomeCidade">
+                <div id="nomeCidade" class="form-text">Entre com o nome da nova cidade</div>
+              </div>
+              <div class="mb-3">
+                <label for="estado" class="form-label">Estado</label>
+                <select id="estado" name="estadoCidade" class="form-select" aria-label="Estado" form="cidadeForm">
+                  <option selected>Selecione um estado</option>
+                  <option value="AC">Acre</option>
+                  <option value="AL">Alagoas</option>
+                  <option value="AP">Amapá</option>
+                  <option value="AM">Amazonas</option>
+                  <option value="BA">Bahia</option>
+                  <option value="CE">Ceará</option>
+                  <option value="DF">Distrito Federal</option>
+                  <option value="ES">Espírito Santo</option>
+                  <option value="GO">Goiás</option>
+                  <option value="MA">Maranhão</option>
+                  <option value="MT">Mato Grosso</option>
+                  <option value="MS">Mato Grosso do Sul</option>
+                  <option value="MG">Minas Gerais</option>
+                  <option value="PA">Pará</option>
+                  <option value="PB">Paraíba</option>
+                  <option value="PR">Paraná</option>
+                  <option value="PE">Pernambuco</option>
+                  <option value="PI">Piauí</option>
+                  <option value="RJ">Rio de Janeiro</option>
+                  <option value="RN">Rio Grande do Norte</option>
+                  <option value="RS">Rio Grande do Sul</option>
+                  <option value="RO">Rondônia</option>
+                  <option value="RR">Roraima</option>
+                  <option value="SC">Santa Catarina</option>
+                  <option value="SP">São Paulo</option>
+                  <option value="SE">Sergipe</option>
+                  <option value="TO">Tocantins</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary">Cadstrar</button>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Fechar</button>
+          </div>
+        </div>
+      </div>
+    </div>
       
   </main>
 
