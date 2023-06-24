@@ -6,7 +6,8 @@
   "license": "MIT",
   "author": "ViniciusTei",
   "scripts": {
-    "serve": "nodemon index.js"
+    "serve": "nodemon index.js",
+    "start": "node index.js"
   },
   "dependencies": {
     "cookie-parser": "^1.4.6",

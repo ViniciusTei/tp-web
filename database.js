@@ -4,9 +4,8 @@ const Login = require('./model/login');
 const Cidade = require('./model/cidade');
 
 const sequelize = new Sequelize('ecommerce', 'root', '', {
-  host: 'localhost',
+  host: '35.199.91.28',
   dialect: 'mysql',
-  port: 3306
 });
 
 Login.init(sequelize);
