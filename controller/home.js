@@ -4,7 +4,7 @@ const HomeController = {
   async render(req, res) {
     const userId = req.userId;
     try {
-      const user = await loginModel.findOne({ where: { emailCliente: payload.useremail } })
+      const user = await loginModel.findOne({ where: { loginId: userId } })
       
       res.render('home', {
         user: {

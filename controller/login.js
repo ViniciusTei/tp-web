@@ -28,6 +28,7 @@ const LoginController = {
     }
   },
   async render(req, res) {
+    res.clearCookie('Authorization')
     res.set({
       'Content-Type': 'text/html',
     })
