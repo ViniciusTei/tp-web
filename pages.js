@@ -1,5 +1,6 @@
 const express = require("express");
 const LoginController = require("./controller/login");
+const HomeController = require("./controller/home");
 
 const auth = require('./middleware/auth');
 
@@ -12,10 +13,7 @@ pages.get('/register', function(req, res) {
 });
 
 // prortected routes
-pages.get('/home', auth, function(req, res) {
-  console.log('home', req.userId)
-  res.render('home', { user: { userEmail: 'teste' }});
-});
+pages.get('/home', auth, HomeController.render);
 pages.get('/cidade', auth, function(req, res) {
   console.log('cidade', req.userId)
   res.render('cidade', { user: { userEmail: 'teste' }});

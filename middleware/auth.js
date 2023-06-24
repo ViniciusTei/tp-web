@@ -8,7 +8,7 @@ function auth (req, res, next) {
   }
 
   req.userId = authHeader
-
+  res.cookie('Authorization', authHeader)
   console.log('User authenticated', authHeader);
   next()
 }
