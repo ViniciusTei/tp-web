@@ -10,10 +10,9 @@ const RegisterController = {
         nivelAcesso: '1'
       })
       
-      console.log('inserted user', user)
-      res.render('home', {
-        user
-      })
+      console.log('inserted new user', user)
+      res.cookie('Authorization', user.loginId)
+      res.redirect(req.headers.origin + '/home')
     } catch (error) {
       res.render('erro', {
         erro: error

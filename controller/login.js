@@ -16,7 +16,7 @@ const LoginController = {
       }
 
       res.cookie('Authorization', user.loginId)
-      res.redirect('http://localhost:3000/home')
+      res.redirect(req.headers.origin + '/home')
     } catch (error) {
       res.set({
         'Content-Type': 'text/html',
