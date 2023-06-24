@@ -26,7 +26,7 @@ USE `ecommerce`;
 -- --------------------------------------------------------
 CREATE TABLE `cidade` (
   `cidadeId` int(12) NOT NULL AUTO_INCREMENT,
-  `codigoCidade` varchar(5) NOT NULL,
+  `codigoCidade` varchar(15) NOT NULL,
   `nomeCidade` varchar(15) NOT NULL,
   `estadoCidade` varchar(2) NOT NULL,
   PRIMARY KEY(cidadeId)

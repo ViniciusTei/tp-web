@@ -15,18 +15,24 @@ const LoginController = {
         throw new Error('User incorret!')
       }
 
-      res.render('home', {
-        user: {
-          userId: user.loginId,
-          userEmail: user.emailCliente
-        }
-      })
+      res.cookie('Authorization', user.loginId)
+      res.redirect('http://localhost:3000/home')
     } catch (error) {
+      res.set({
+        'Content-Type': 'text/html',
+      })
+
       res.render('erro', {
         erro: error
       })
     }
   },
+  async render(req, res) {
+    res.set({
+      'Content-Type': 'text/html',
+    })
+    res.render('login');
+  }
 }
 
 module.exports = LoginController;
