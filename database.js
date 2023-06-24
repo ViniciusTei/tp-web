@@ -1,10 +1,11 @@
 const { Sequelize } = require('sequelize');
+require("dotenv").config();
 
 const Login = require('./model/login');
 const Cidade = require('./model/cidade');
 
 const sequelize = new Sequelize('ecommerce', 'root', '', {
-  host: '35.199.91.28',
+  host: process.env.MYSQL_HOST,
   dialect: 'mysql',
 });
 

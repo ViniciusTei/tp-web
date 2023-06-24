@@ -4,6 +4,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const router = require('./routes');
 const pages = require("./pages");
+
 require('./database');
 
 const app = express()
