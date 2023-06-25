@@ -4,63 +4,14 @@
   <%- include('../shared/head'); %>
 </head>
 <body class="vh-100 vw-100 p-4" style="background: #6610f2">
-  <header class="bg-body rounded mb-4 p-2 d-flex justify-content-between" style="max-height: 50px;">
-    <div class="d-flex align-items-center">
-      <div style="font-size: 18px; color: #fff; font-weight: bold; background: #6610f2; width: 32px; height: 32px; border-radius: 4px; display: flex; align-items: center; justify-content: center;">
-        C
-      </div>
-      <p class="h5 ms-2 d-none d-md-block">Controle de vendas</p>
-    </div>
-      
-    <div class="d-flex align-items-center">
-      <p class="h6 me-2 d-none d-md-block">Bem vindo, <%= user.userEmail %></p>
-      <button type="button" class="btn btn-primary btn-sm">
-        <div>
-          <a href="/" style="color: #fff;">Sair</a>
-          <i class="bi bi-box-arrow-right"></i>
-        </div>
-      </button>
-    </div>
-    
-  </header>
+  
+  <%- include('../shared/navbar', {user: user}); %>
 
   <main class="container bg-body rounded p-2">
     
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 ms-auto me-auto">
-        <div class="col m-1">
-          <div class="rounded d-flex justify-content-center align-items-center" style="background: #7749F8; width: 238px; height: 152px;">
-            <div class="d-flex" style="color: #fff">
-              <i class="bi bi-person-lines-fill me-2"></i>
-              <p class="fw-bold" style="cursor: pointer;">Clientes</p>
-            </div>
-          </div>
-        </div>
-        <div class="col m-1">
-          <div class="rounded d-flex justify-content-center align-items-center" style="background: #7749F8; width: 238px; height: 152px;">
-            <div class="d-flex" style="color: #fff">
-              <i class="bi bi-cart4 me-2"></i>
-              <p class="fw-bold" style="cursor: pointer;">Produtos</p>
-            </div>
-          </div>
-        </div>
-        <div class="col m-1">
-          <div class="rounded d-flex justify-content-center align-items-center" style="background: #7749F8; width: 238px; height: 152px;">
-            <div class="d-flex" style="color: #fff">
-              <i class="bi bi-house me-2"></i>
-              <p class="fw-bold" style="cursor: pointer;">Fabricantes</p>
-            </div>
-          </div>
-        </div>
-        <div class="col m-1">
-          <div class="rounded d-flex justify-content-center align-items-center" style="background: #7749F8; width: 238px; height: 152px;">
-            <div class="d-flex" style="color: #fff">
-              <i class="bi bi-shop me-2"></i>
-              <p class="fw-bold" style="cursor: pointer;">Vendas</p>
-            </div>
-          </div>
-        </div>
-        <div class="col m-1">
-          <div class="rounded d-flex justify-content-center align-items-center" style="background: #7749F8; width: 238px; height: 152px;">
+      <div class="row row-cols-4">
+        <div class="col m-1 ms-auto me-auto" style="width: 238px; height: 152px;">
+          <div class="rounded d-flex justify-content-center align-items-center w-100 h-100" style="background: #7749F8;">
             <div class="d-flex" style="color: #fff">
               <i class="bi bi-buildings me-2"></i>
               <p class="fw-bold">
@@ -69,16 +20,48 @@
             </div>
           </div>
         </div>
-        <div class="col m-1">
-          <div class="rounded d-flex justify-content-center align-items-center" style="background: #7749F8; width: 238px; height: 152px;">
+        <div class="col m-1 ms-auto me-auto" style="width: 238px; height: 152px;">
+          <div class="rounded d-flex justify-content-center align-items-center w-100 h-100" style="background: #7749F8;">
+            <div class="d-flex" style="color: #fff">
+              <i class="bi bi-person-lines-fill me-2"></i>
+              <p class="fw-bold" style="cursor: pointer;">Clientes</p>
+            </div>
+          </div>
+        </div>
+        <div class="col m-1 ms-auto me-auto" style="width: 238px; height: 152px;">
+          <div class="rounded d-flex justify-content-center align-items-center w-100 h-100" style="background: #7749F8;">
+            <div class="d-flex" style="color: #fff">
+              <i class="bi bi-cart4 me-2"></i>
+              <p class="fw-bold" style="cursor: pointer;">Produtos</p>
+            </div>
+          </div>
+        </div>
+        <div class="col m-1 ms-auto me-auto" style="width: 238px; height: 152px;">
+          <div class="rounded d-flex justify-content-center align-items-center w-100 h-100" style="background: #7749F8;">
+            <div class="d-flex" style="color: #fff">
+              <i class="bi bi-house me-2"></i>
+              <p class="fw-bold" style="cursor: pointer;">Fabricantes</p>
+            </div>
+          </div>
+        </div>
+        <div class="col m-1 ms-auto me-auto" style="width: 238px; height: 152px;">
+          <div class="rounded d-flex justify-content-center align-items-center w-100 h-100" style="background: #7749F8; width: 238px; height: 152px;">
+            <div class="d-flex" style="color: #fff">
+              <i class="bi bi-shop me-2"></i>
+              <p class="fw-bold" style="cursor: pointer;">Vendas</p>
+            </div>
+          </div>
+        </div>
+        <div class="col mt-2 ms-auto me-auto m-lg-2" style="width: 238px; height: 152px;">
+          <div class="rounded d-flex justify-content-center align-items-center w-100 h-100" style="background: #7749F8; width: 238px; height: 152px;">
             <div class="d-flex" style="color: #fff">
               <i class="bi bi-file-text me-2"></i>
               <p class="fw-bold" style="cursor: pointer;">Relatórios</p>
             </div>
           </div>
         </div>
-        <div class="col m-1">
-          <div class="rounded d-flex justify-content-center align-items-center" style="background: #7749F8; width: 238px; height: 152px;">
+        <div class="col mt-2 ms-auto me-auto m-lg-2 ms-lg-3" style="width: 238px; height: 152px;">
+          <div class="rounded d-flex justify-content-center align-items-center w-100 h-100" style="background: #7749F8; width: 238px; height: 152px;">
             <div class="d-flex" style="color: #fff">
               <i class="bi bi-person me-2"></i>
               <p class="fw-bold" style="cursor: pointer;">Meu usuário</p>
