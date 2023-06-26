@@ -1,4 +1,5 @@
 const clienteModel = require('../model/cliente');
+const { BASE_URL } = require("../config/config");
 
 const ClientesController = {
   async render(req, res) {
@@ -31,6 +32,31 @@ const ClientesController = {
       })
     }
     
+  },
+  async index(req, res) {
+    const { nomeCliente, enderecoCliente, telefoneCliente, cidadeCliente } = req.body
+    try {
+      if (!nomeCliente || !enderecoCliente  || !telefoneCliente || !cidadeCliente) {
+        console.log({ nomeCliente, enderecoCliente, telefoneCliente, cidadeCliente }, req.body)
+        throw new Error('Dados faltando para criar o cliente')
+      }
+
+      const novoCliente = await clienteModel.create({
+        idCliente: null,
+        nomeCliente,
+        enderecoCliente,
+        telefoneCliente,
+        idCidade: cidadeCliente
+      })
+
+      console.log('inserted new client', novoCliente)
+      res.redirect(BASE_URL + '/clientes')
+    } catch (error) {
+      res.render('erro', {
+        erro: error,
+        redirect: '/clientes',
+      })
+    }
   }
 }
 
