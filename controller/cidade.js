@@ -13,7 +13,8 @@ const CidadeController = {
       })
     } catch (error) {
       res.render('erro', {
-        erro: error
+        erro: error,
+        redirect: '/home',
       })
     }
     
