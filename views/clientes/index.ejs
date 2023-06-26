@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../shared/head'); %>
+</head>
+<body class="vh-100 vw-100 p-4" style="background: #6610f2">
+
+  <%- include('../shared/navbar', {user: user}); %>
+
+  <main class="container bg-body rounded p-4">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <h1>Clientes</h1>
+      
+      <%- include('../shared/back_link'); %>
+      
+    </div>
+    <div class="d-flex flex-row-reverse">
+      <button type="button" class="btn btn-outline-secondary btn-sm ms-auto" data-bs-toggle="modal" data-bs-target="#novoClienteModal">Cadastrar novo cliente</button>
+    </div>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nome</th>
+            <th class="d-none d-md-block" scope="col">Endereço</th>
+            <th scope="col">Telefone</th>
+            <th scope="col">Cidade</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% clientes.forEach(function(cliente){ %>
+            
+            <tr>
+            <th scope="row"><%= cliente.idCliente %></th>
+            <td><%= cliente.nomeCliente  %></td>
+            <td class="d-none d-md-block"><%= cliente.enderecoCliente %> </td> 
+            <td><%= cliente.telefoneCliente %> </td> 
+            <td><%= cliente.cidadeCliente %> </td> 
+            </tr>
+            
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal fade" id="novoClienteModal" tabindex="-1" aria-labelledby="novoClienteModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Cadastrar novo cliente</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+          </div>
+          <div class="modal-body">
+
+            <form action="/api/clientes" method="post">
+              <div class="mb-3">
+                <label for="nomeCliente" class="form-label">Nome</label>
+                <input type="text" class="form-control" id="nomeCliente" name="nomeCliente" aria-describedby="nomeCliente" placeholder="Entre com o nome completo" required>
+              </div>
+              <div class="mb-3">
+                <label for="enderecoCliente" class="form-label">Endereço</label>
+                <input type="text" class="form-control" id="enderecoCliente" name="enderecoCliente" aria-describedby="enderecoCliente" placeholder="Entre com o nome completo" required>
+              </div>
+              <div class="mb-3">
+                <label for="telefoneCliente" class="form-label">Telefone</label>
+                <input type="text" class="form-control" id="telefoneCliente" name="telefoneCliente" aria-describedby="telefoneCliente" placeholder="Entre com o nome completo" required>
+              </div>
+              <div id="meuSelect" class="mb-3">
+                <label for="cidadeCliente" class="form-label">Cidade</label>
+                <!-- O select será criado aqui -->
+              </div>
+              <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
+              </div>
+            </form>
+            
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+      
+  </main>
+
+<%- include('../shared/footer'); %> 
+<script>
+  document.getElementById('novoClienteModal').addEventListener('shown.bs.modal', function (e) {
+    const baseUrl = window.location.href.replace('/clientes', '/api')
+    const userId = document.cookie.split(';').find(c => c.includes('Authorization')).split('=')[1]
+    fetch(baseUrl + '/cidades', { headers:{ 'Authentication':  userId }})
+      .then((response) => response.json().then(data => {
+        const select = document.createElement("select");
+        select.classList.add('form-select')
+        select.id = "cidadeCliente"
+        select.name = "cidadeCliente"
+
+        const option = document.createElement("option");
+        option.value = 0;
+        option.text = "Selecione uma cidade";
+        option.selected = true;
+        select.appendChild(option);
+
+        // Iterar sobre as cidades na resposta
+        data.cidades.forEach(function(cidade) {
+          const option = document.createElement("option");
+          option.value = cidade.idCidade;
+          option.text = cidade.nomeCidade;
+          select.appendChild(option);
+        });
+
+        // Adicionar o select ao elemento com id "meuSelect"
+        document.getElementById("meuSelect").appendChild(select);
+      }))
+      .catch((err) => console.log(err))
+  })
+</script>
+</body>
+</html>

@@ -8,9 +8,13 @@
   <%- include('../shared/navbar', {user: user}); %>
 
   <main class="container bg-body rounded p-4">
-    
-    <h1>Cidade</h1>
 
+    <div class="d-flex align-items-center justify-content-between">
+      <h1>Cidade</h1>
+      
+      <%- include('../shared/back_link'); %>
+      
+    </div>
     <div class="d-flex flex-row-reverse">
       <button type="button" class="btn btn-outline-secondary btn-sm ms-auto" data-bs-toggle="modal" data-bs-target="#novaCidadeModal">Cadastrar nova cidade</button>
     </div>
@@ -82,11 +86,13 @@
                   <option value="TO">Tocantins</option>
                 </select>
               </div>
-              <button type="submit" class="btn btn-primary">Cadstrar</button>
+              <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
+              </div>
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Fechar</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
           </div>
         </div>
       </div>

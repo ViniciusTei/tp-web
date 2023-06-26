@@ -13,7 +13,8 @@ const CidadeController = {
       })
     } catch (error) {
       res.render('erro', {
-        erro: error
+        erro: error,
+        redirect: '/home',
       })
     }
     
@@ -40,6 +41,22 @@ const CidadeController = {
       res.render('erro', {
         erro: error,
         redirect: '/cidade',
+      })
+    }
+  },
+  async get(req, res) {
+    try {
+      const cidades = await cidadeModel.findAll()
+
+      const response = {
+        cidades: cidades.map(c => ({ idCidade: c.cidadeId, nomeCidade: `${c.nomeCidade}/${c.estadoCidade}` }))
+      }
+
+      res.status(200).json(response)
+    } catch (error) {
+      res.render('erro', {
+        erro: error,
+        redirect: '/home',
       })
     }
   }

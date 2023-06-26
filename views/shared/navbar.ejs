@@ -13,13 +13,13 @@
         <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/home">Home</a>
+              <a id="home" class="nav-link active" aria-current="page" href="/home">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/cidades">Cidades</a>
+              <a id="cidade" class="nav-link" href="/cidade">Cidades</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link disabled">Clientes</a>
+              <a class="nav-link" href="/clientes">Clientes</a>
             </li>
             <li class="nav-item">
               <a class="nav-link disabled">Vendas</a>
@@ -48,3 +48,19 @@
     </nav>
     
   </header>
+
+  <script>
+    const links = ['home', 'cidade', 'clientes']
+    const currentPage = window.location.pathname
+    links.forEach(id => {
+      const a = document.getElementById(id)
+
+      if (a) {
+        if (currentPage === `/${id}`) {
+          a.classList.add('active')
+        } else {
+          a.classList.remove('active')
+        }
+      }
+    })
+  </script>

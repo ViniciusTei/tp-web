@@ -1,62 +1,53 @@
 # Projeto final - WEB
 
-Como escopo do nosso projeto, deverá ser observado os seguintes requisitos:
-  
-  - I - Processo de Venda
-  - II - Cadastro de Produtos
-  - III - Cadastro de Fabricante
-  - IV - Cadastro de Clientes
-  - V - Emissão de Relatórios
+O projeto final é um sistema web de gerenciamento de vendas, onde é possível realizar processos de venda, cadastrar produtos, fabricantes e clientes, além de emitir relatórios. O sistema segue uma arquitetura MVC clássica
 
-### Requisitos
+O projeto foi implementado em JavaScript, utilizando o framework [express](https://expressjs.com/pt-br/) para a interação e persistência de dados. 
 
-1. O sistema deverá ser desenvolvido utilizando arquitetura MVC Clássica onde deverá ser 
-desenvido um Controller para cada View existente no projeto.
+Para ajudar na interação com a camada de dados, foi utlizado o ORM [Sequelize](https://sequelize.org/) para comunicar com o banco de dados. Para a camada da view, foi utilizada a bilioteca [EJS](https://ejs.co/). Ela é uma template engine que podemos utilizar com o nodejs para criar views utilizando HTML e tags para carregar dados para o nosso cliente.
 
-2. Como estrutura (modelagem dos dados), será necessário modelar as serguintes tabelas:
-  
-  - Cliente (idCliente, nomeCliente, enderecoCliente, telefoneCliente e idCidade)
-  - Cidade (codigoCidade, nomeCidade, estadoCidade)
+## Pré-requisitos
 
-Logo, teremos uma tabela para cadastrarmos os clientes com as suas respectivas 
-informações como nome, endereço e telefone. Como precisamos categorizar os 
-clientes por cidade, é necessário criar uma tabela auxiliar, ligando os clientes com 
-suas respectivas cidades
+Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
 
-3. Precisamos também controlar produtos:
+[Node.js](https://nodejs.org/en/). 
 
-  - Produto (idProduto, descricaoProduto, estoqueProduto, precoCusto, precoVenda e 
-idFabricante)
-  - Fabricante (idFabricante, nomeFabricante, siteFabricante)
+## Execução
 
-Neste caso, cadastraremos informações como: descrição, quantidade em estoque, 
-preço de custo e preço de venda. Precisamos também saber qual é o fabricante de 
-cada produto. Como podem surgir novos fabricantes a qualquer momento, 
-preferimos criar uma tabela auxiliar que contenha o nome e o site do fabricante para 
-podermos categorizar os produtos por fabricante.
+```bash
+# instale as dependencias do projeto
+npm install
 
-4. Proximo controle que deveremos implementar são das vendas realizadas onde teremos as 
-seguintes tabelas:
+# rode o comando para iniciar o servidor
+npm start
 
-  - Venda (idVendas, idCliente, dataVenda, valorTotal, valorPago e desconto)
-  - Item (idItem, idVenda, idProduto, quantidadeItem)
+# O servidor inciará na porta:3000 - acesse http://localhost:3000 
+```
 
-Neste caso, precisaremos armazenar para qual cliente a venda foi realizada e em 
-qual data. Também precisaremos armazenar o valor total da venda e também o valor 
-pago, caso tenha sido concedido algum desconto. Em uma venda, podem ser 
-vendidas quantidades diferentes de produtos. Portanto faz-se necessária a criação 
-de uma tabela para armazenar quais foram os produtos que participaram de uma 
-determinada venda.
+## Features
 
-5. Como ultimo tópico a ser desenvolvido, deverá ser implementado um relatório com os seguintes 
-requisitos:
+  - [x] Cadastro de Clientes
+  - [ ] Processo de Venda
+  - [ ] Cadastro de Produtos
+  - [ ] Cadastro de Fabricante
+  - [ ] Emissão de Relatórios
 
-Nosso relatório exibirá em tela uma tabela contendo as vendas de um período, dentro 
-do qual serão exibidas em tela a data da venda, o cliente para o qual a venda fora 
-realizada e todos os itens que compuseram aquela venda: descrição do produto, 
-quantidade, preço e um subtotal.
+---
+### Tecnologias
 
-**Nota**: como instruções adicionais, o projeto poderá ser desenvolvido em PHP ou Javascript. O 
-uso de frameworks para as camadas de interação e persistencia de dados são fortemente 
-recomendados. Procedimentos para Internacionalização, Controle de Sessões e Registros 
-deverão ser implementados.
+As seguintes ferramentas foram usadas na construção do projeto:
+
+- [Node.js](https://nodejs.org/en/)
+- [Express](https://expressjs.com/pt-br/)
+- [Sequelize](https://sequelize.org/)
+- [EJS](https://ejs.co/)
+
+---
+
+## Autor
+
+<a href="https://github.com/ViniciusTei/">
+ <img style="border-radius: 50%;" src="https://github.com/ViniciusTei.png" width="100px;" alt=""/>
+ <br />
+ <sub><b>Vinicius Teixeira</b></sub></a> <a href="https://github.com/ViniciusTei/" title="GitHub">🚀</a>
+ <br />

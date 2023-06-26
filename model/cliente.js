@@ -1,35 +1,39 @@
 const { Model, DataTypes } = require('sequelize');
 
-class Cidade extends Model {
+class Cliente extends Model {
   static init(sequelize) {
     super.init({
-      cidadeId: {
+      idCliente: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
       },
-      codigoCidade: {
+      nomeCliente: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      nomeCidade: {
+      enderecoCliente: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      estadoCidade: {
+      telefoneCliente: {
         type: DataTypes.STRING,
+        allowNull: false,
+      },
+      idCidade: {
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
     }, {
       sequelize,
-      tableName: 'cidade',
+      tableName: 'cliente',
       timestamps: false
     })
   }
 
   static associate(models) {
-    this.hasMany(models.Cliente, { foreignKey: 'idCidade', as: 'localizacao' })
+    this.belongsTo(models.Cidade, { foreignKey: 'idCidade', as: 'localizacao' })
   }
 }
 
-module.exports = Cidade;
+module.exports = Cliente;
