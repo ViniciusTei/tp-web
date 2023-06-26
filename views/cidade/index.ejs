@@ -8,9 +8,13 @@
   <%- include('../shared/navbar', {user: user}); %>
 
   <main class="container bg-body rounded p-4">
-    
-    <h1>Cidade</h1>
 
+    <div class="d-flex align-items-center justify-content-between">
+      <h1>Cidade</h1>
+      
+      <%- include('../shared/back_link'); %>
+      
+    </div>
     <div class="d-flex flex-row-reverse">
       <button type="button" class="btn btn-outline-secondary btn-sm ms-auto" data-bs-toggle="modal" data-bs-target="#novaCidadeModal">Cadastrar nova cidade</button>
     </div>
