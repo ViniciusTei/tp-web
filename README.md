@@ -26,10 +26,11 @@ npm start
 
 ## Features
 
+  - [x] Cadastro de Cidades
   - [x] Cadastro de Clientes
-  - [ ] Processo de Venda
-  - [ ] Cadastro de Produtos
   - [ ] Cadastro de Fabricante
+  - [ ] Cadastro de Produtos
+  - [ ] Processo de Venda
   - [ ] Emissão de Relatórios
 
 ---

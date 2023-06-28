@@ -3,6 +3,8 @@ const LoginController = require("./controller/login");
 const RegisterController = require("./controller/register");
 const CidadeController = require("./controller/cidade");
 const ClientesController = require("./controller/clientes");
+const FabricantesController = require("./controller/fabricante");
+const ProdutosController = require("./controller/produtos");
 
 const auth = require("./middleware/auth");
 
@@ -13,6 +15,8 @@ router.post('/register', RegisterController.index)
 router.post('/cidade', auth, CidadeController.index)
 router.get('/cidades', auth, CidadeController.get)
 router.post('/clientes', auth, ClientesController.index)
+router.get('/fabricante', auth, FabricantesController.get)
+router.get('/produtos', auth, ProdutosController.get)
 
 
 module.exports = router;
