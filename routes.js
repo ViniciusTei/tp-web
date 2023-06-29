@@ -16,6 +16,7 @@ router.post('/cidade', auth, CidadeController.index)
 router.get('/cidades', auth, CidadeController.get)
 router.post('/clientes', auth, ClientesController.index)
 router.get('/fabricante', auth, FabricantesController.get)
+router.post('/fabricante', auth, FabricantesController.create)
 router.get('/produtos', auth, ProdutosController.get)
 
 
