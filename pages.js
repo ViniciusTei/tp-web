@@ -5,6 +5,7 @@ const RegisterController = require("./controller/register");
 const CidadeController = require("./controller/cidade");
 const ClientesController = require("./controller/clientes");
 const FabricanteController = require("./controller/fabricante");
+const ProdutoController = require("./controller/produtos");
 
 const auth = require('./middleware/auth');
 
@@ -18,5 +19,6 @@ pages.get('/home', auth, HomeController.render);
 pages.get('/cidade', auth, CidadeController.render);
 pages.get('/clientes', auth, ClientesController.render);
 pages.get('/fabricante', auth, FabricanteController.render);
+pages.get('/produto', auth, ProdutoController.render);
 
 module.exports = pages;

@@ -17,7 +17,8 @@ router.get('/cidades', auth, CidadeController.get)
 router.post('/clientes', auth, ClientesController.index)
 router.get('/fabricante', auth, FabricantesController.get)
 router.post('/fabricante', auth, FabricantesController.create)
-router.get('/produtos', auth, ProdutosController.get)
+router.get('/produto', auth, ProdutosController.get)
+router.post('/produto', auth, ProdutosController.create)
 
 
 module.exports = router;

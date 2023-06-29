@@ -18,7 +18,6 @@ const FabricanteController = {
     }
   },
   async get(req, res) {
-    const user = req.user;
     try {
       const fabricantes = await fabricanteModel.findAll()
       res.send(fabricantes)

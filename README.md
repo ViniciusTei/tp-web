@@ -28,8 +28,8 @@ npm start
 
   - [x] Cadastro de Cidades
   - [x] Cadastro de Clientes
-  - [ ] Cadastro de Fabricante
-  - [ ] Cadastro de Produtos
+  - [x] Cadastro de Fabricante
+  - [x] Cadastro de Produtos
   - [ ] Processo de Venda
   - [ ] Emissão de Relatórios
 
