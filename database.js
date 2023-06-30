@@ -4,6 +4,8 @@ const { DB_HOST } = require("./config/config");
 const Login = require('./model/login');
 const Cidade = require('./model/cidade');
 const Cliente = require('./model/cliente');
+const Fabricante = require('./model/fabricante');
+const Produto = require('./model/produto');
 
 const config = {
   dialect: 'mysql',
@@ -22,8 +24,12 @@ const sequelize = new Sequelize('ecommerce', 'root', '', process.env.PRODUCTION 
 Login.init(sequelize);
 Cidade.init(sequelize);
 Cliente.init(sequelize);
+Fabricante.init(sequelize);
+Produto.init(sequelize);
 
 Cidade.associate(sequelize.models);
 Cliente.associate(sequelize.models);
+Fabricante.associate(sequelize.models);
+Produto.associate(sequelize.models);
 
 module.exports = sequelize;

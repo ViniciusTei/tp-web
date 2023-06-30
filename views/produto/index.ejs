@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <%- include('../shared/head'); %>
+</head>
+<body class="vh-100 vw-100 p-4" style="background: #6610f2">
+
+  <%- include('../shared/navbar', {user: user}); %>
+
+  <main class="container bg-body rounded p-4">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <h1>Produto</h1>
+      
+      <%- include('../shared/back_link'); %>
+      
+    </div>
+    <div class="d-flex flex-row-reverse">
+      <button type="button" class="btn btn-outline-secondary btn-sm ms-auto" data-bs-toggle="modal" data-bs-target="#novaCidadeModal">Cadastrar novo produto</button>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Descrição</th>
+          <th class="d-none d-md-block" scope="col">Estoque</th>
+          <th scope="col">Preço de custo</th>
+          <th scope="col">Preço de venda</th>
+          <th class="d-none d-md-block" scope="col">Fabricante</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% produtos.forEach(function(p){ %>
+           
+          <tr>
+           <th scope="row"><%= p.idProduto %></th>
+           <td><%= p.descricaoProduto %></td>
+           <td class="d-none d-md-block"><%= p.estoqueProduto %></td>
+           <td><%= p.precoCusto %></td>
+           <td><%= p.precoVenda %></td>
+           <td class="d-none d-md-block"><%= p.fabricante.nomeFabricante %></td>
+          </tr>
+          
+        <% }); %>
+      </tbody>
+    </table>
+
+    <div class="modal fade" id="novaCidadeModal" tabindex="-1" aria-labelledby="novaCidadeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Cadastrar novo produto</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+          </div>
+          <div class="modal-body">
+            <form id="cidadeForm" method="post" action="/api/produto">
+              <div class="mb-3">
+                <label for="descricaoProduto" class="form-label">Descrição</label>
+                <input type="text" class="form-control" id="descricaoProduto" name="descricaoProduto" aria-describedby="descricaoProduto" placeholder="Entre com a descrição do produto" required>
+              </div>
+              <div class="mb-3">
+                <label for="estoqueProduto" class="form-label">Estoque</label>
+                <input type="number" class="form-control" id="estoqueProduto" name="estoqueProduto" aria-describedby="estoqueProduto" placeholder="Entre com a quantidade" required>
+              </div>
+              <div class="container text-center">
+                <div class="row">
+                  <div class="col">
+                    <div class="mb-3">
+                      <label for="precoCusto" class="form-label">Preço de custo</label>
+                      <input type="number" min="0.00" max="10000.00" step="0.01" placeholder='Preço' class="form-control" id="precoCusto" name="precoCusto" aria-describedby="precoCusto" />
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="mb-3">
+                      <label for="precoVenda" class="form-label">Preço de venda</label>
+                      <input type="number" min="0.00" max="10000.00" step="0.01" placeholder='Preço' class="form-control" id="precoVenda" name="precoVenda" aria-describedby="precoVenda" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div id="meuSelect" class="mb-3">
+                <label for="fabricante" class="form-label">Fabricante</label>
+                <!-- O select será criado aqui -->
+              </div>
+              <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+      
+  </main>
+
+<%- include('../shared/footer'); %>
+<script>
+  document.getElementById('novaCidadeModal').addEventListener('shown.bs.modal', function (e) {
+    const baseUrl = window.location.href.replace('/produto', '/api')
+    const userId = document.cookie.split(';').find(c => c.includes('Authorization')).split('=')[1]
+    fetch(baseUrl + '/fabricante', { headers:{ 'Authentication':  userId }})
+      .then((response) => response.json().then(data => {
+        const select = document.createElement("select");
+        select.classList.add('form-select')
+        select.id = "fabricanteProduto"
+        select.name = "fabricanteProduto"
+
+        const option = document.createElement("option");
+        option.value = 0;
+        option.text = "Selecione um fabricante";
+        option.selected = true;
+        select.appendChild(option);
+
+        // Iterar sobre as cidades na resposta
+        data.forEach(function(f) {
+          const option = document.createElement("option");
+          option.value = f.fabricanteId;
+          option.text = f.nomeFabricante;
+          select.appendChild(option);
+        });
+
+        // Adicionar o select ao elemento com id "meuSelect"
+        document.getElementById("meuSelect").appendChild(select);
+      }))
+      .catch((err) => console.log(err))
+  })
+</script>
+</body>
+</html>
