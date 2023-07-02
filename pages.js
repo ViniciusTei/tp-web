@@ -22,5 +22,6 @@ pages.get('/clientes', auth, ClientesController.render);
 pages.get('/fabricante', auth, FabricanteController.render);
 pages.get('/produto', auth, ProdutoController.render);
 pages.get('/vendas', auth, VendasController.render);
+pages.get('/vendas/cadastro', auth, VendasController.renderCadastro);
 
 module.exports = pages;

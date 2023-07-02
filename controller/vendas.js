@@ -28,6 +28,20 @@ const VendasController = {
         redirect: '/home'
       })
     }
+  },
+  async renderCadastro(req, res) {
+    const user = req.user;
+    try {
+      
+      res.render('venda/cadastro', {
+        user
+      })
+    } catch (error) {
+      res.render('erro', {
+        erro: error,
+        redirect: '/vendas'
+      })
+    }
   }
 }
 
