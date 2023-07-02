@@ -57,6 +57,26 @@ const ClientesController = {
         redirect: '/clientes',
       })
     }
+  },
+  async get(req, res) {
+    // const user = req.user;
+    try {
+      const allClientes = await clienteModel.findAll()
+
+      const clientes = allClientes.map(c => {
+        return {
+          idCliente: c.idCliente,
+          nomeCliente: c.nomeCliente,
+        }
+      })
+
+      res.send(clientes)
+    } catch (error) {
+      res.render('erro', {
+        erro: error,
+        redirect: '/home',
+      })
+    }
   }
 }
 
