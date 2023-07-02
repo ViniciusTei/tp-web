@@ -1,44 +1,43 @@
 const { Model, DataTypes } = require('sequelize');
 
-class Produto extends Model {
+class Vendas extends Model {
   static init(sequelize) {
     super.init({
-      idProduto: {
+      idVendas: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
       },
-      descricaoProduto: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      estoqueProduto: {
+      idCliente: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      precoCusto: {
+      dataVenda: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      valorTotal: {
         type: DataTypes.FLOAT,
         allowNull: false,
       },
-      precoVenda: {
+      valorPago: {
         type: DataTypes.FLOAT,
         allowNull: false,
       },
-      idFabricante: {
-        type: DataTypes.INTEGER,
-        allowNull: false
+      desconto: {
+        type: DataTypes.FLOAT,
       }
     }, {
       sequelize,
-      tableName: 'produto',
+      tableName: 'venda',
       timestamps: false
     })
   }
 
   static associate(models) {
-    this.belongsTo(models.Fabricante, { foreignKey: 'idFabricante', as: 'fabricante' })
-    this.hasMany(models.Item, { foreignKey: 'idProduto', as: 'produto' })
+    this.belongsTo(models.Cliente, { foreignKey: 'idCliente', as: 'cliente' })
+    this.hasMany(models.Item, { foreignKey: 'idVenda', as: 'venda' })
   }
 }
 
-module.exports = Produto;
+module.exports = Vendas;
