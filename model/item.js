@@ -27,6 +27,11 @@ class Item extends Model {
     })
   }
 
+  // relacao one-to-many com vendas
+  // cada item pode pertencer a uma venda
+  // ----
+  // relacao one-to-manh com produtos
+  // cada item pode ter um protudo
   static associate(models) {
     this.belongsTo(models.Vendas, { foreignKey: 'idVenda', as: 'venda' })
     this.belongsTo(models.Produto, { foreignKey: 'idProduto', as: 'produto' })

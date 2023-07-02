@@ -35,9 +35,14 @@ class Produto extends Model {
     })
   }
 
+  // relacao one-to-many com fabricante
+  // um produto pode pertencer apenas a um fabricante
+  // ------
+  // relacao one-to-many com item
+  // um produto pode pertencer a varios itens
   static associate(models) {
     this.belongsTo(models.Fabricante, { foreignKey: 'idFabricante', as: 'fabricante' })
-    this.hasMany(models.Item, { foreignKey: 'idProduto', as: 'produto' })
+    this.hasMany(models.Item, { foreignKey:'idProduto', as: 'produto' })
   }
 }
 
