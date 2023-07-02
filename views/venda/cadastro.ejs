@@ -20,9 +20,8 @@
       <div>
         <div>
           <label for="nomeClienteInput" class="form-label">Cliente</label>
-          <div class="input-group mb-3">
-            <input id="nomeClienteInput" type="text" class="form-control" placeholder="Nome do cliente" aria-label="Nome do cliente" aria-describedby="btnCliente">
-            <button class="btn btn-outline-primary" type="button" id="btnCliente">Adicionar</button>
+          <div class="input-group mb-3" id="clienteSelectGroup">
+            
           </div>
         </div>
         <div class="mb-3">
@@ -31,38 +30,17 @@
         </div>
         <div>
           <label for="inputGroupSelectProdutos" class="form-label">Produtos</label>
-          <div class="input-group">
-            <select class="form-select" id="inputGroupSelectProdutos" aria-label="Selecione um produto">
-              <option selected>Choose...</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </select>
-            <button class="btn btn-outline-primary" type="button" id="btnProdutos">Adicionar</button>
+          <div class="input-group" id="produtoSelectGroup">
+            
           </div>
         </div>
         <div class="mt-2">
-          <ul class="list-group">
+          <ul class="list-group" id="produtosList">
             <li class="list-group-item active d-flex align-items-start justify-content-between" aria-current="true">
               <p class="mb-0">Produto</p>
               <p class="mb-0">Quantidade</p>
             </li>
-            <li class="list-group-item d-flex align-items-start justify-content-between" aria-current="true">
-              <p class="mb-0">One</p>
-              <p class="mb-0">
-                <button class="btn btn-light" type="button">-</button>
-                10
-                <button class="btn btn-light" type="button">+</button>
-              </p>
-            </li>
-            <li class="list-group-item d-flex align-items-start justify-content-between" aria-current="true">
-              <p class="mb-0">One</p>
-              <p class="mb-0">
-                <button class="btn btn-light" type="button">-</button>
-                10
-                <button class="btn btn-light" type="button">+</button>
-              </p>
-            </li>
+            
           </ul>
         </div>
         <div>
@@ -99,21 +77,7 @@
                 <th scope="col">Valor total</th>
               </tr>
             </thead>
-            <tbody>
-
-                <tr>
-                 <th scope="row">1</th>
-                 <td scope="row">Teste></td>
-                 <td scope="row"> 1</td> 
-                 <td scope="row">R$100,00</td>
-                </tr>
-
-                <tr>
-                  <th scope="row">1</th>
-                  <td>Teste></td>
-                  <td>1</td> 
-                  <td>R$100,00</td>
-                 </tr>
+            <tbody id="tableBody">
                 
             </tbody>
           </table>      
@@ -121,13 +85,13 @@
 
           <hr class="border border-light m-0 mb-2">
           <div class="d-flex justify-content-between column-gap-2 m-0">
-            <p class="fw-light fs-6 mb-0">Valor total:</p> <p class="mb-0">R$100,00</p> 
+            <p class="fw-light fs-6 mb-0">Valor total:</p> <p class="mb-0" id="displayValorTotal"></p> 
           </div>
           <div class="d-flex justify-content-between column-gap-2 m-0">
-            <p class="fw-light fs-6 mb-0">Desconto:</p> <p class="mb-0">R$10,00</p> 
+            <p class="fw-light fs-6 mb-0">Desconto:</p> <p class="mb-0" id="displayDesconto"></p> 
           </div>
           <div class="d-flex justify-content-between column-gap-2 m-0">
-            <p class="fw-light fs-6 mb-0">Valor pago:</p> <p class="mb-0">R$90,00</p> 
+            <p class="fw-light fs-6 mb-0">Valor pago:</p> <p class="mb-0" id="displayValorPago"></p> 
           </div>
 
           <div class="d-grid gap-2 mt-2">
@@ -144,29 +108,91 @@
   const $ = (id) => document.getElementById(id)
   let clientes = []
   let produtos = []
+  let produtosSelecionados = []
+  let valorTotal = 0
+  let valorPago = 0
+  let valorDesconto = 0   
 
   // carrega quando a tela fica pronta
-  document.addEventListener("readystatechange", function(){
+  document.addEventListener("readystatechange", function(event){
     const baseUrl = window.location.href.replace('/vendas/cadastro', '/api')
     const userId = document.cookie.split(';').find(c => c.includes('Authorization')).split('=')[1]
+    if (event.target.readyState === "interactive") {   //does same as:  ..addEventListener("DOMContentLoaded"..
     fetch(baseUrl + '/clientes', { headers:{ 'Authentication':  userId }})
       .then((response) => response.json().then(data => {
         clientes = data
-        console.log('clientes', data)
+        const select = document.createElement("select");
+        select.classList.add('form-select')
+        select.id = "clienteSelect"
+        select.name = "clienteSelect"
+
+        const option = document.createElement("option");
+        option.value = 0;
+        option.text = "Selecione um cliente";
+        option.selected = true;
+        select.appendChild(option);
+
+        // Iterar sobre as cidades na resposta
+        data.forEach(function(c) {
+          const option = document.createElement("option");
+          option.value = c.idCliente;
+          option.text = c.nomeCliente;
+          select.appendChild(option);
+        });
+
+        const button = document.createElement('button')
+        button.classList.add('btn')
+        button.classList.add('btn-outline-primary')
+        button.id = 'btnCliente'
+        button.textContent = 'Adicionar'
+        button.addEventListener('click', (ev) => {
+          const cliente = clientes.find(c => c.idCliente == $('clienteSelect').value)
+          $('displayCliente').innerHTML = cliente.nomeCliente
+        })
+        // Adicionar o select ao elemento com id "meuSelect"
+        $("clienteSelectGroup").appendChild(select);
+        $("clienteSelectGroup").appendChild(button);
       }))
       .catch((err) => console.log(err))
     fetch(baseUrl + '/produto', { headers:{ 'Authentication':  userId }})
       .then((response) => response.json().then(data => {
         produtos = data
-        console.log('produto', data)
+        const select = document.createElement("select");
+        select.classList.add('form-select')
+        select.id = "produtoSelect"
+        select.name = "produtoSelect"
+
+        const option = document.createElement("option");
+        option.value = 0;
+        option.text = "Selecione um produto";
+        option.selected = true;
+        select.appendChild(option);
+
+        // Iterar sobre as cidades na resposta
+        data.forEach(function(p) {
+          const option = document.createElement("option");
+          option.value = p.idProduto;
+          option.text = p.descricaoProduto;
+          select.appendChild(option);
+        });
+
+        const button = document.createElement('button')
+        button.classList.add('btn')
+        button.classList.add('btn-outline-primary')
+        button.id = 'btnProduto'
+        button.textContent = 'Adicionar'
+        button.addEventListener('click', (ev) => {
+          const produto = produtos.find(c => c.idProduto == $('produtoSelect').value)
+          addProdutoToList(produto)
+        })
+        // Adicionar o select ao elemento com id "meuSelect"
+        $("produtoSelectGroup").appendChild(select);
+        $("produtoSelectGroup").appendChild(button);
       }))
       .catch((err) => console.log(err))
+    }
+
   });
-  
-  // constroi resumo do pedido
-  $('btnCliente').addEventListener('click', (ev) => {
-    $('displayCliente').innerHTML = $('nomeClienteInput').value
-  })
 
   $('dataVendaInput').addEventListener('change', () => {
     const valor = $('dataVendaInput').value;
@@ -176,6 +202,137 @@
     let year = objectDate.getFullYear();
     $('displayData').innerHTML = `${day}/${month}/${year}`
   })
+
+  function addProdutoToList(produto) {
+    const produtoAlreadyOnList = produtosSelecionados.find(p => p.produto.idProduto == produto.idProduto)
+
+    if (produtoAlreadyOnList) {
+      aumentarQuantidade(produto.idProduto)
+      return
+    }
+    
+    produtosSelecionados.push({
+      produto,
+      quantidade: 1
+    })
+
+    const item = document.createElement('li')
+    item.classList.add('list-group-item')
+    item.classList.add('d-flex')
+    item.classList.add('align-items-start')
+    item.classList.add('justify-content-between')
+
+    const pText = document.createElement('p')
+    pText.innerHTML = produto.descricaoProduto
+    pText.classList.add('mb-0')
+
+    item.appendChild(pText)
+
+    const pQuantity = document.createElement('p')
+    pQuantity.id = `quantity-${produto.idProduto}`
+    pQuantity.classList.add('mb-0')
+    pQuantity.classList.add('d-flex')
+    pQuantity.classList.add('align-items-center')
+    pQuantity.classList.add('column-gap-2')
+    const buttonMenos = document.createElement('button')
+    buttonMenos.classList.add('btn')
+    buttonMenos.classList.add('btn-light')
+    buttonMenos.innerText = '-'
+    buttonMenos.addEventListener('click', () => diminuirQuantidade(produto.idProduto))
+    pQuantity.appendChild(buttonMenos)
+    const pQuantityText = document.createElement('div')
+    pQuantityText.classList.add('mb-0')
+    pQuantityText.innerHTML =  ` 1 `
+    pQuantityText.id = `quantity-${produto.idProduto}-text`
+    pQuantity.append(pQuantityText)
+    const buttonMais = document.createElement('button')
+    buttonMais.classList.add('btn')
+    buttonMais.classList.add('btn-light')
+    buttonMais.innerText = '+'
+    buttonMais.addEventListener('click', () => aumentarQuantidade(produto.idProduto))
+    pQuantity.appendChild(buttonMais)
+    item.appendChild(pQuantity)
+
+    $('produtosList').appendChild(item)
+    addItemToResumo(produto)
+    calculaValores()
+  }
+
+  function createListItemQuantityElement(element, quantidade, produto) {
+    const buttonMenos = document.createElement('button')
+    buttonMenos.classList.add('btn')
+    buttonMenos.classList.add('btn-light')
+    buttonMenos.innerText = '-'
+    buttonMenos.addEventListener('click', () => diminuirQuantidade(produto.idProduto))
+    element.appendChild(buttonMenos)
+    const pText = document.createElement('p')
+    pText.classList.add('mb-0')
+    pText.innerHTML =  ` ${quantidade} `
+    pText.id = `quantity-${produto.idProduto}-text`
+    element.append(pText)
+    const buttonMais = document.createElement('button')
+    buttonMais.classList.add('btn')
+    buttonMais.classList.add('btn-light')
+    buttonMais.innerText = '+'
+    buttonMais.addEventListener('click', () => aumentarQuantidade(produto.idProduto))
+    element.appendChild(buttonMais)
+  }
+
+  function diminuirQuantidade(produtoId) {
+    const produto = produtosSelecionados.find(p => p.produto.idProduto === produtoId)
+    produto.quantidade = produto.quantidade === 1 ? produto.quantidade : produto.quantidade - 1;
+    $(`quantity-${produtoId}-text`).innerHTML = ` ${produto.quantidade} `
+    calculaValores()
+  }
+
+  function aumentarQuantidade(produtoId) {
+    const produto = produtosSelecionados.find(p => p.produto.idProduto === produtoId)
+    produto.quantidade = produto.quantidade + 1;
+    $(`quantity-${produtoId}-text`).innerHTML = ` ${produto.quantidade} `
+    calculaValores()
+  }
+
+  function calculaValores() {
+    valorTotal = produtosSelecionados.reduce((acc, curr) => {
+      return acc + (curr.produto.precoVenda * curr.quantidade)
+    }, 0)
+    valorPago = valorTotal - valorDesconto
+    $('displayValorTotal').innerHTML = formatMoney(valorTotal)
+    $('displayDesconto').innerHTML = formatMoney(valorDesconto)
+    $('displayValorPago').innerHTML = formatMoney(valorPago)
+  }
+
+  $('btnDesconto').addEventListener('click', () => {
+    const value = $('descontoInput').value.replace(',', '.')
+    valorDesconto = Number(value)
+    calculaValores()
+  })
+
+  function formatMoney(value) {
+    const priceFormat = new Intl.NumberFormat('pt-Br', {
+      style: 'currency',
+      currency: 'BRL'
+    })
+
+    return priceFormat.format(value)
+  }
+
+  function addItemToResumo(produto) {
+    const tr = document.createElement('tr')
+    const tdID = document.createElement('td')
+    tdID.innerHTML = produto.idProduto
+    tr.appendChild(tdID)
+    const tdDescricao = document.createElement('td')
+    tdDescricao.innerHTML = produto.descricaoProduto
+    tr.appendChild(tdDescricao)
+    const tdQuantidade = document.createElement('td')
+    tdQuantidade.innerHTML = 1
+    tr.appendChild(tdQuantidade)
+    const tdPreco = document.createElement('td')
+    tdPreco.innerHTML = produto.precoVenda
+    tr.appendChild(tdPreco)
+    $('tableBody').appendChild(tr)
+  }
 </script>
 </body>
 </html>
