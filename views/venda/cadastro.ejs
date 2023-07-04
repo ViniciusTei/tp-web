@@ -94,7 +94,7 @@
           </div>
 
           <div class="d-grid gap-2 mt-2">
-            <button class="btn btn-primary" type="button">Cadastrar</button>
+            <button class="btn btn-primary" type="button" id="submitBtn">Cadastrar</button>
           </div>
         </div>
       </div>
@@ -111,7 +111,8 @@
   let valorTotal = 0
   let valorPago = 0
   let valorDesconto = 0  
-  let cliente = null 
+  let cliente = null
+  let dataVenda = null
 
   // carrega quando a tela fica pronta
   document.addEventListener("readystatechange", function(event){
@@ -149,7 +150,7 @@
           const c = clientes.find(c => c.idCliente == $('clienteSelect').value)
           if (c) {
             $('displayCliente').innerHTML = c.nomeCliente
-            cliente = cliente
+            cliente = c
           }
         })
         // Adicionar o select ao elemento com id "meuSelect"
@@ -187,7 +188,10 @@
         button.textContent = 'Adicionar'
         button.addEventListener('click', (ev) => {
           const produto = produtos.find(c => c.idProduto == $('produtoSelect').value)
-          addProdutoToList(produto)
+          
+          if (produto) {
+            addProdutoToList(produto)
+          }
         })
         // Adicionar o select ao elemento com id "meuSelect"
         $("produtoSelectGroup").appendChild(select);
@@ -198,11 +202,53 @@
 
   });
 
+  $('submitBtn').addEventListener('click', () => {
+    const payload = {
+      idCliente: cliente?.idCliente,
+      dataVenda,
+      valorTotal,
+      valorPago,
+      desconto: valorDesconto,
+      items: produtosSelecionados.map(x => ({ idProduto: x.produto.idProduto, quantidade: x.quantidade }))
+    }
+
+    const missing = []
+
+    Object.keys(payload).forEach(key => {
+      if (payload[key] === null || payload[key] === undefined) {
+        missing.push(key)
+      }
+    })
+
+    if(missing.length > 0) {
+      alert(`Faltando dados: ${missing.join(',')}`)
+      throw new Error(`Missing parameters: ${missing.join(',')}`)
+    }
+
+    const baseUrl = window.location.href.replace('/vendas/cadastro', '/api')
+    const url = baseUrl + '/vendas' 
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Manipular a resposta da API
+        console.log(data);
+      })
+      .catch(error => {
+        // Lidar com erros
+        console.error('Ocorreu um erro:', error);
+      });
+  })
+
   $('dataVendaInput').addEventListener('change', () => {
-    const valor = $('dataVendaInput').value.replace(/-/g, '\/');
-    console.log('value', valor)
-    let objectDate = new Date(valor);
-    console.log('date', objectDate)
+    dataVenda = $('dataVendaInput').value;
+    let objectDate = new Date(dataVenda.replace(/-/g, '\/'));
     let day = objectDate.getDate();
     let month = objectDate.getMonth() + 1;
     let year = objectDate.getFullYear();

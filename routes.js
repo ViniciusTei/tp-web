@@ -5,6 +5,7 @@ const CidadeController = require("./controller/cidade");
 const ClientesController = require("./controller/clientes");
 const FabricantesController = require("./controller/fabricante");
 const ProdutosController = require("./controller/produtos");
+const VendasController = require("./controller/vendas");
 
 const auth = require("./middleware/auth");
 
@@ -20,6 +21,6 @@ router.get('/fabricante', auth, FabricantesController.get)
 router.post('/fabricante', auth, FabricantesController.create)
 router.get('/produto', auth, ProdutosController.get)
 router.post('/produto', auth, ProdutosController.create)
-
+router.post('/vendas', auth, VendasController.create)
 
 module.exports = router;
