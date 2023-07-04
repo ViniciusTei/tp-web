@@ -16,12 +16,12 @@
       
     </div>
 
-    <div class="d-flex align-items-start justify-content-between">
+    <div class="d-flex align-items-start justify-content-evenly">
       <div>
         <div>
           <label for="nomeClienteInput" class="form-label">Cliente</label>
           <div class="input-group mb-3" id="clienteSelectGroup">
-            
+            <!--Cria o select aqui-->
           </div>
         </div>
         <div class="mb-3">
@@ -31,7 +31,7 @@
         <div>
           <label for="inputGroupSelectProdutos" class="form-label">Produtos</label>
           <div class="input-group" id="produtoSelectGroup">
-            
+            <!--Cria o select aqui-->
           </div>
         </div>
         <div class="mt-2">
@@ -40,7 +40,6 @@
               <p class="mb-0">Produto</p>
               <p class="mb-0">Quantidade</p>
             </li>
-            
           </ul>
         </div>
         <div>
@@ -111,7 +110,8 @@
   let produtosSelecionados = []
   let valorTotal = 0
   let valorPago = 0
-  let valorDesconto = 0   
+  let valorDesconto = 0  
+  let cliente = null 
 
   // carrega quando a tela fica pronta
   document.addEventListener("readystatechange", function(event){
@@ -146,14 +146,18 @@
         button.id = 'btnCliente'
         button.textContent = 'Adicionar'
         button.addEventListener('click', (ev) => {
-          const cliente = clientes.find(c => c.idCliente == $('clienteSelect').value)
-          $('displayCliente').innerHTML = cliente.nomeCliente
+          const c = clientes.find(c => c.idCliente == $('clienteSelect').value)
+          if (c) {
+            $('displayCliente').innerHTML = c.nomeCliente
+            cliente = cliente
+          }
         })
         // Adicionar o select ao elemento com id "meuSelect"
         $("clienteSelectGroup").appendChild(select);
         $("clienteSelectGroup").appendChild(button);
       }))
       .catch((err) => console.log(err))
+    
     fetch(baseUrl + '/produto', { headers:{ 'Authentication':  userId }})
       .then((response) => response.json().then(data => {
         produtos = data
@@ -215,6 +219,7 @@
       produto,
       quantidade: 1
     })
+
 
     const item = document.createElement('li')
     item.classList.add('list-group-item')
@@ -282,6 +287,8 @@
     const produto = produtosSelecionados.find(p => p.produto.idProduto === produtoId)
     produto.quantidade = produto.quantidade === 1 ? produto.quantidade : produto.quantidade - 1;
     $(`quantity-${produtoId}-text`).innerHTML = ` ${produto.quantidade} `
+    $(`resumo-quantidade-${produtoId}`).innerHTML = ` ${produto.quantidade} `
+    $(`resumo-preco-${produtoId}`).innerHTML = formatMoney(produto.produto.precoVenda * produto.quantidade)
     calculaValores()
   }
 
@@ -289,6 +296,8 @@
     const produto = produtosSelecionados.find(p => p.produto.idProduto === produtoId)
     produto.quantidade = produto.quantidade + 1;
     $(`quantity-${produtoId}-text`).innerHTML = ` ${produto.quantidade} `
+    $(`resumo-quantidade-${produtoId}`).innerHTML = ` ${produto.quantidade} `
+    $(`resumo-preco-${produtoId}`).innerHTML = formatMoney(produto.produto.precoVenda * produto.quantidade)
     calculaValores()
   }
 
@@ -326,10 +335,12 @@
     tdDescricao.innerHTML = produto.descricaoProduto
     tr.appendChild(tdDescricao)
     const tdQuantidade = document.createElement('td')
+    tdQuantidade.id = `resumo-quantidade-${produto.idProduto}`
     tdQuantidade.innerHTML = 1
     tr.appendChild(tdQuantidade)
     const tdPreco = document.createElement('td')
-    tdPreco.innerHTML = produto.precoVenda
+    tdPreco.id = `resumo-preco-${produto.idProduto}`
+    tdPreco.innerHTML = formatMoney(produto.precoVenda)
     tr.appendChild(tdPreco)
     $('tableBody').appendChild(tr)
   }
