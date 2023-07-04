@@ -8,8 +8,7 @@ function formatMoney(value) {
 }
 
 function formatDate(date) {
-  let objectDate = new Date(date);
-
+  let objectDate = new Date(date.replace(/-/g, '\/'));
 
   let day = objectDate.getDate();
 

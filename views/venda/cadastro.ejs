@@ -199,8 +199,10 @@
   });
 
   $('dataVendaInput').addEventListener('change', () => {
-    const valor = $('dataVendaInput').value;
+    const valor = $('dataVendaInput').value.replace(/-/g, '\/');
+    console.log('value', valor)
     let objectDate = new Date(valor);
+    console.log('date', objectDate)
     let day = objectDate.getDate();
     let month = objectDate.getMonth() + 1;
     let year = objectDate.getFullYear();
