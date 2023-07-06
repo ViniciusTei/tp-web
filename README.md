@@ -31,7 +31,7 @@ npm start
 - [x] Cadastro de Fabricante
 - [x] Cadastro de Produtos
 - [x] Processo de Venda
-- [ ] Emissão de Relatórios
+- [x] Emissão de Relatórios
 
 ---
 
