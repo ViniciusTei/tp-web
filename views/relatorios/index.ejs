@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <%- include('../shared/head'); %>
+</head>
+<body class="vh-100 vw-100 p-4" style="background: #6610f2">
+
+  <%- include('../shared/navbar', {user: user}); %>
+
+  <main class="container bg-body rounded p-4">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <h1>Relatórios</h1>
+      
+      <%- include('../shared/back_link'); %>
+      
+    </div>
+    <div class="d-flex flex-row-reverse">
+      <div class="input-group w-auto">
+        <span class="input-group-text">Periodo:</span>
+        <input type="date" aria-label="Data inicial" class="form-control" id="dataInicial">
+        <input type="date" aria-label="Data final" class="form-control" id="dataFinal">
+        <button type="button" class="btn btn-primary" onclick="buscarPeriodoBtn()">Buscar</button>
+      </div>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Data</th>
+          <th class="d-none d-md-block" scope="col">Cliente</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+      
+      <% vendas.forEach(function(v){ %>
+        <tr>
+          <td><%= v.id %></td>
+          <td><%= v.dataVenda %></td>
+          <td><%= v.nomeCliente %></td>
+          <td style="cursor: pointer;" data-bs-toggle="collapse" href="#multiCollapse-<%= v.id %>" role="button" aria-expanded="false" aria-controls="multiCollapse-<%= v.id %>"><i class="bi bi-caret-down"></i></td>
+        </tr> 
+        
+        <tr class="collapse multi-collapse" id="multiCollapse-<%= v.id %>">
+          <td colspan="4">
+            <table class="table table-secondary b-0">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Produto</th>
+                  <th scope="col">Quantidade</th>
+                  <th scope="col">Valor</th>
+                </tr>
+              </thead>
+              <tbody class="table-group-divider">
+                <% v.produtos.forEach(function(p) { %>
+                  <tr>
+                    <th scope="row"><%= p.id %></th>
+                    <td><%= p.descricao %></td>
+                    <td><%= p.quantidade %></td>
+                    <td><%= p.valor %></td>
+                  </tr>
+                <% }); %>
+                </tbody>
+              </table>
+            </td>
+          </tr> 
+      <% }); %>
+    </tbody>
+    </table>
+      
+  </main>
+
+<%- include('../shared/footer'); %>
+<script>
+  $ = (id) => document.getElementById(id)
+
+  function buscarPeriodoBtn() {
+    const dataInicial = $('dataInicial').value
+    const dataFinal = $('dataFinal').value
+
+    if (dataInicial && dataFinal) {
+      window.location.href = `/relatorios?dataInicial=${dataInicial}&dataFinal=${dataFinal}`
+    } else {
+      alert('Você precisa inserir uma data inicial e uma da final!')
+    }
+  }
+
+
+</script>
+</body>

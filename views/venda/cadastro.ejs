@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <%- include('../shared/head'); %>
+</head>
+<body class="vh-100 vw-100 p-4" style="background: #6610f2">
+
+  <%- include('../shared/navbar', {user: user}); %>
+
+  <main class="container bg-body rounded p-4">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <h1>Cadastrar nova venda</h1>
+      
+      <%- include('../shared/back_link'); %>
+      
+    </div>
+
+    <div class="d-flex align-items-start justify-content-evenly">
+      <div>
+        <div>
+          <label for="nomeClienteInput" class="form-label">Cliente</label>
+          <div class="input-group mb-3" id="clienteSelectGroup">
+            <!--Cria o select aqui-->
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="dataVendaInput" class="form-label">Data da venda</label>
+          <input type="date" class="form-control" id="dataVendaInput">
+        </div>
+        <div>
+          <label for="inputGroupSelectProdutos" class="form-label">Produtos</label>
+          <div class="input-group" id="produtoSelectGroup">
+            <!--Cria o select aqui-->
+          </div>
+        </div>
+        <div class="mt-2">
+          <ul class="list-group" id="produtosList">
+            <li class="list-group-item active d-flex align-items-start justify-content-between" aria-current="true">
+              <p class="mb-0">Produto</p>
+              <p class="mb-0">Quantidade</p>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <label for="descontoInput" class="form-label">Desconto</label>
+          <div class="input-group mb-3">
+            <input id="descontoInput" type="text" class="form-control" placeholder="Desconto" aria-label="Desconto" aria-describedby="btnDesconto">
+            <button class="btn btn-outline-primary" type="button" id="btnDesconto">Adicionar</button>
+          </div>
+        </div>
+        
+      </div>
+      <div class="card text-bg-secondary mb-3">
+        <div class="card-header text-center">
+          <h3>Resumo da venda</h3>
+        </div>
+        <div class="card-body">
+          <div class="d-flex column-gap-2 m-0">
+            <p class="fw-semibold m-0"">Cliente:</p> <p class="mb-0" id="displayCliente"></p> 
+          </div>
+          <div class="d-flex column-gap-2 m-0">
+            <p class="fw-semibold m-0"">Data:</p> <p id="displayData"></p> 
+          </div>
+          
+          <hr class="border border-light m-0">
+
+          <h5 class="card-title mt-4">Itens da venda</h5>
+          
+          <table class="table table-secondary">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Produto</th>
+                <th scope="col">Quantidade</th>
+                <th scope="col">Valor total</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+                
+            </tbody>
+          </table>      
+
+
+          <hr class="border border-light m-0 mb-2">
+          <div class="d-flex justify-content-between column-gap-2 m-0">
+            <p class="fw-light fs-6 mb-0">Valor total:</p> <p class="mb-0" id="displayValorTotal"></p> 
+          </div>
+          <div class="d-flex justify-content-between column-gap-2 m-0">
+            <p class="fw-light fs-6 mb-0">Desconto:</p> <p class="mb-0" id="displayDesconto"></p> 
+          </div>
+          <div class="d-flex justify-content-between column-gap-2 m-0">
+            <p class="fw-light fs-6 mb-0">Valor pago:</p> <p class="mb-0" id="displayValorPago"></p> 
+          </div>
+
+          <div class="d-grid gap-2 mt-2">
+            <button class="btn btn-primary" type="button" id="submitBtn">Cadastrar</button>
+          </div>
+        </div>
+      </div>
+
+    </div> 
+  </main>
+
+<%- include('../shared/footer'); %>
+<script>
+  const $ = (id) => document.getElementById(id)
+  let clientes = []
+  let produtos = []
+  let produtosSelecionados = []
+  let valorTotal = 0
+  let valorPago = 0
+  let valorDesconto = 0  
+  let cliente = null
+  let dataVenda = null
+
+  // carrega quando a tela fica pronta
+  document.addEventListener("readystatechange", function(event){
+    const baseUrl = window.location.href.replace('/vendas/cadastro', '/api')
+    const userId = document.cookie.split(';').find(c => c.includes('Authorization')).split('=')[1]
+    if (event.target.readyState === "interactive") {   //does same as:  ..addEventListener("DOMContentLoaded"..
+    fetch(baseUrl + '/clientes', { headers:{ 'Authentication':  userId }})
+      .then((response) => response.json().then(data => {
+        clientes = data
+        const select = document.createElement("select");
+        select.classList.add('form-select')
+        select.id = "clienteSelect"
+        select.name = "clienteSelect"
+
+        const option = document.createElement("option");
+        option.value = 0;
+        option.text = "Selecione um cliente";
+        option.selected = true;
+        select.appendChild(option);
+
+        // Iterar sobre as cidades na resposta
+        data.forEach(function(c) {
+          const option = document.createElement("option");
+          option.value = c.idCliente;
+          option.text = c.nomeCliente;
+          select.appendChild(option);
+        });
+
+        const button = document.createElement('button')
+        button.classList.add('btn')
+        button.classList.add('btn-outline-primary')
+        button.id = 'btnCliente'
+        button.textContent = 'Adicionar'
+        button.addEventListener('click', (ev) => {
+          const c = clientes.find(c => c.idCliente == $('clienteSelect').value)
+          if (c) {
+            $('displayCliente').innerHTML = c.nomeCliente
+            cliente = c
+          }
+        })
+        // Adicionar o select ao elemento com id "meuSelect"
+        $("clienteSelectGroup").appendChild(select);
+        $("clienteSelectGroup").appendChild(button);
+      }))
+      .catch((err) => console.log(err))
+    
+    fetch(baseUrl + '/produto', { headers:{ 'Authentication':  userId }})
+      .then((response) => response.json().then(data => {
+        produtos = data
+        const select = document.createElement("select");
+        select.classList.add('form-select')
+        select.id = "produtoSelect"
+        select.name = "produtoSelect"
+
+        const option = document.createElement("option");
+        option.value = 0;
+        option.text = "Selecione um produto";
+        option.selected = true;
+        select.appendChild(option);
+
+        // Iterar sobre as cidades na resposta
+        data.forEach(function(p) {
+          const option = document.createElement("option");
+          option.value = p.idProduto;
+          option.text = p.descricaoProduto;
+          select.appendChild(option);
+        });
+
+        const button = document.createElement('button')
+        button.classList.add('btn')
+        button.classList.add('btn-outline-primary')
+        button.id = 'btnProduto'
+        button.textContent = 'Adicionar'
+        button.addEventListener('click', (ev) => {
+          const produto = produtos.find(c => c.idProduto == $('produtoSelect').value)
+          
+          if (produto) {
+            addProdutoToList(produto)
+          }
+        })
+        // Adicionar o select ao elemento com id "meuSelect"
+        $("produtoSelectGroup").appendChild(select);
+        $("produtoSelectGroup").appendChild(button);
+      }))
+      .catch((err) => console.log(err))
+    }
+
+  });
+
+  $('submitBtn').addEventListener('click', () => {
+    const payload = {
+      idCliente: cliente?.idCliente,
+      dataVenda,
+      valorTotal,
+      valorPago,
+      desconto: valorDesconto,
+      items: produtosSelecionados.map(x => ({ idProduto: x.produto.idProduto, quantidade: x.quantidade }))
+    }
+
+    const missing = []
+
+    Object.keys(payload).forEach(key => {
+      if (payload[key] === null || payload[key] === undefined) {
+        missing.push(key)
+      }
+    })
+
+    if(missing.length > 0) {
+      alert(`Faltando dados: ${missing.join(',')}`)
+      throw new Error(`Missing parameters: ${missing.join(',')}`)
+    }
+
+    const baseUrl = window.location.href.replace('/vendas/cadastro', '/api')
+    const url = baseUrl + '/vendas' 
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Manipular a resposta da API
+        console.log(data);
+      })
+      .catch(error => {
+        // Lidar com erros
+        console.error('Ocorreu um erro:', error);
+      });
+  })
+
+  $('dataVendaInput').addEventListener('change', () => {
+    dataVenda = $('dataVendaInput').value;
+    let objectDate = new Date(dataVenda.replace(/-/g, '\/'));
+    let day = objectDate.getDate();
+    let month = objectDate.getMonth() + 1;
+    let year = objectDate.getFullYear();
+    $('displayData').innerHTML = `${day}/${month}/${year}`
+  })
+
+  function addProdutoToList(produto) {
+    const produtoAlreadyOnList = produtosSelecionados.find(p => p.produto.idProduto == produto.idProduto)
+
+    if (produtoAlreadyOnList) {
+      aumentarQuantidade(produto.idProduto)
+      return
+    }
+    
+    produtosSelecionados.push({
+      produto,
+      quantidade: 1
+    })
+
+
+    const item = document.createElement('li')
+    item.classList.add('list-group-item')
+    item.classList.add('d-flex')
+    item.classList.add('align-items-start')
+    item.classList.add('justify-content-between')
+
+    const pText = document.createElement('p')
+    pText.innerHTML = produto.descricaoProduto
+    pText.classList.add('mb-0')
+
+    item.appendChild(pText)
+
+    const pQuantity = document.createElement('p')
+    pQuantity.id = `quantity-${produto.idProduto}`
+    pQuantity.classList.add('mb-0')
+    pQuantity.classList.add('d-flex')
+    pQuantity.classList.add('align-items-center')
+    pQuantity.classList.add('column-gap-2')
+    const buttonMenos = document.createElement('button')
+    buttonMenos.classList.add('btn')
+    buttonMenos.classList.add('btn-light')
+    buttonMenos.innerText = '-'
+    buttonMenos.addEventListener('click', () => diminuirQuantidade(produto.idProduto))
+    pQuantity.appendChild(buttonMenos)
+    const pQuantityText = document.createElement('div')
+    pQuantityText.classList.add('mb-0')
+    pQuantityText.innerHTML =  ` 1 `
+    pQuantityText.id = `quantity-${produto.idProduto}-text`
+    pQuantity.append(pQuantityText)
+    const buttonMais = document.createElement('button')
+    buttonMais.classList.add('btn')
+    buttonMais.classList.add('btn-light')
+    buttonMais.innerText = '+'
+    buttonMais.addEventListener('click', () => aumentarQuantidade(produto.idProduto))
+    pQuantity.appendChild(buttonMais)
+    item.appendChild(pQuantity)
+
+    $('produtosList').appendChild(item)
+    addItemToResumo(produto)
+    calculaValores()
+  }
+
+  function createListItemQuantityElement(element, quantidade, produto) {
+    const buttonMenos = document.createElement('button')
+    buttonMenos.classList.add('btn')
+    buttonMenos.classList.add('btn-light')
+    buttonMenos.innerText = '-'
+    buttonMenos.addEventListener('click', () => diminuirQuantidade(produto.idProduto))
+    element.appendChild(buttonMenos)
+    const pText = document.createElement('p')
+    pText.classList.add('mb-0')
+    pText.innerHTML =  ` ${quantidade} `
+    pText.id = `quantity-${produto.idProduto}-text`
+    element.append(pText)
+    const buttonMais = document.createElement('button')
+    buttonMais.classList.add('btn')
+    buttonMais.classList.add('btn-light')
+    buttonMais.innerText = '+'
+    buttonMais.addEventListener('click', () => aumentarQuantidade(produto.idProduto))
+    element.appendChild(buttonMais)
+  }
+
+  function diminuirQuantidade(produtoId) {
+    const produto = produtosSelecionados.find(p => p.produto.idProduto === produtoId)
+    produto.quantidade = produto.quantidade === 1 ? produto.quantidade : produto.quantidade - 1;
+    $(`quantity-${produtoId}-text`).innerHTML = ` ${produto.quantidade} `
+    $(`resumo-quantidade-${produtoId}`).innerHTML = ` ${produto.quantidade} `
+    $(`resumo-preco-${produtoId}`).innerHTML = formatMoney(produto.produto.precoVenda * produto.quantidade)
+    calculaValores()
+  }
+
+  function aumentarQuantidade(produtoId) {
+    const produto = produtosSelecionados.find(p => p.produto.idProduto === produtoId)
+    produto.quantidade = produto.quantidade + 1;
+    $(`quantity-${produtoId}-text`).innerHTML = ` ${produto.quantidade} `
+    $(`resumo-quantidade-${produtoId}`).innerHTML = ` ${produto.quantidade} `
+    $(`resumo-preco-${produtoId}`).innerHTML = formatMoney(produto.produto.precoVenda * produto.quantidade)
+    calculaValores()
+  }
+
+  function calculaValores() {
+    valorTotal = produtosSelecionados.reduce((acc, curr) => {
+      return acc + (curr.produto.precoVenda * curr.quantidade)
+    }, 0)
+    valorPago = valorTotal - valorDesconto
+    $('displayValorTotal').innerHTML = formatMoney(valorTotal)
+    $('displayDesconto').innerHTML = formatMoney(valorDesconto)
+    $('displayValorPago').innerHTML = formatMoney(valorPago)
+  }
+
+  $('btnDesconto').addEventListener('click', () => {
+    const value = $('descontoInput').value.replace(',', '.')
+    valorDesconto = Number(value)
+    calculaValores()
+  })
+
+  function formatMoney(value) {
+    const priceFormat = new Intl.NumberFormat('pt-Br', {
+      style: 'currency',
+      currency: 'BRL'
+    })
+
+    return priceFormat.format(value)
+  }
+
+  function addItemToResumo(produto) {
+    const tr = document.createElement('tr')
+    const tdID = document.createElement('td')
+    tdID.innerHTML = produto.idProduto
+    tr.appendChild(tdID)
+    const tdDescricao = document.createElement('td')
+    tdDescricao.innerHTML = produto.descricaoProduto
+    tr.appendChild(tdDescricao)
+    const tdQuantidade = document.createElement('td')
+    tdQuantidade.id = `resumo-quantidade-${produto.idProduto}`
+    tdQuantidade.innerHTML = 1
+    tr.appendChild(tdQuantidade)
+    const tdPreco = document.createElement('td')
+    tdPreco.id = `resumo-preco-${produto.idProduto}`
+    tdPreco.innerHTML = formatMoney(produto.precoVenda)
+    tr.appendChild(tdPreco)
+    $('tableBody').appendChild(tr)
+  }
+</script>
+</body>
+</html>

@@ -33,6 +33,7 @@ class Cliente extends Model {
 
   static associate(models) {
     this.belongsTo(models.Cidade, { foreignKey: 'idCidade', as: 'localizacao' })
+    this.belongsTo(models.Vendas, { foreignKey: 'idCliente', as: 'cliente' })
   }
 }
 

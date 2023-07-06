@@ -2,7 +2,7 @@
 
 O projeto final é um sistema web de gerenciamento de vendas, onde é possível realizar processos de venda, cadastrar produtos, fabricantes e clientes, além de emitir relatórios. O sistema segue uma arquitetura MVC clássica
 
-O projeto foi implementado em JavaScript, utilizando o framework [express](https://expressjs.com/pt-br/) para a interação e persistência de dados. 
+O projeto foi implementado em JavaScript, utilizando o framework [express](https://expressjs.com/pt-br/) para a interação e persistência de dados.
 
 Para ajudar na interação com a camada de dados, foi utlizado o ORM [Sequelize](https://sequelize.org/) para comunicar com o banco de dados. Para a camada da view, foi utilizada a bilioteca [EJS](https://ejs.co/). Ela é uma template engine que podemos utilizar com o nodejs para criar views utilizando HTML e tags para carregar dados para o nosso cliente.
 
@@ -10,7 +10,7 @@ Para ajudar na interação com a camada de dados, foi utlizado o ORM [Sequelize]
 
 Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
 
-[Node.js](https://nodejs.org/en/). 
+[Node.js](https://nodejs.org/en/).
 
 ## Execução
 
@@ -21,19 +21,20 @@ npm install
 # rode o comando para iniciar o servidor
 npm start
 
-# O servidor inciará na porta:3000 - acesse http://localhost:3000 
+# O servidor inciará na porta:3000 - acesse http://localhost:3000
 ```
 
 ## Features
 
-  - [x] Cadastro de Cidades
-  - [x] Cadastro de Clientes
-  - [x] Cadastro de Fabricante
-  - [x] Cadastro de Produtos
-  - [ ] Processo de Venda
-  - [ ] Emissão de Relatórios
+- [x] Cadastro de Cidades
+- [x] Cadastro de Clientes
+- [x] Cadastro de Fabricante
+- [x] Cadastro de Produtos
+- [x] Processo de Venda
+- [x] Emissão de Relatórios
 
 ---
+
 ### Tecnologias
 
 As seguintes ferramentas foram usadas na construção do projeto:
@@ -52,3 +53,8 @@ As seguintes ferramentas foram usadas na construção do projeto:
  <br />
  <sub><b>Vinicius Teixeira</b></sub></a> <a href="https://github.com/ViniciusTei/" title="GitHub">🚀</a>
  <br />
+
+## TODO
+
+- [ ] Corrigir criacao da venda, nome fica vazio
+- [ ] Fazer versao mobile das vendas

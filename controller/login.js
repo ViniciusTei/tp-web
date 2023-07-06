@@ -24,7 +24,8 @@ const LoginController = {
       })
 
       res.render('erro', {
-        erro: error
+        erro: error,
+        redirect: '/'
       })
     }
   },

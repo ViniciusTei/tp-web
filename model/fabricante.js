@@ -23,6 +23,8 @@ class Fabricante extends Model {
     })
   }
 
+  //  relacao one-to-many com produtos
+  // um fabricante pode ser de multiplos produtos
   static associate(models) {
     this.hasMany(models.Produto, { foreignKey: 'idFabricante', as: 'fabricante' })
   }
