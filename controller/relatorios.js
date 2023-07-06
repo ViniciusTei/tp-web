@@ -1,10 +1,26 @@
 const vendasModel = require('../model/vendas')
+const { Op } = require("sequelize");
 
 const RelatoriosController = {
   async render(req, res) {
     const user = req.user;
     try {
+      const { dataInicial, dataFinal } = req.query;
+
+      const config = {}
+      
+      if(dataInicial && dataFinal) {
+        Object.assign(config, {
+           where: {
+            dataVenda: {
+              [Op.between]: [dataInicial, dataFinal],
+            }
+          },
+        })
+      } 
+
       const vendas = await vendasModel.findAll({
+        ...config,
         include: [
           {
             association: 'produtos',
