@@ -37,7 +37,7 @@ class Vendas extends Model {
   // relaacao one-to-many com item
   // pode ter multiplos itens
   static associate(models) {
-    this.hasMany(models.Item, { foreignKey: 'idVenda', as: 'venda' })
+    this.hasMany(models.Item, { foreignKey: 'idVenda', as: 'produtos' })
     this.hasOne(models.Cliente, { foreignKey: 'idCliente', as: 'cliente' })
   }
 }
