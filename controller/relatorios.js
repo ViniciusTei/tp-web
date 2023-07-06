@@ -15,7 +15,7 @@ const RelatoriosController = {
           {
             association: 'cliente'
           },
-      ]
+        ]
       })
 
       const result =  vendas.map(v => ({
